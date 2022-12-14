@@ -1,43 +1,49 @@
 let value = 0;
-const boxesEl = document.querySelector("#boxes");
-const inputValueEl = document.querySelector("input");
-const createBtn = document.querySelector("button[data-create]");
-const destroyBtn = document.querySelector("button[data-destroy]");
+const refs = {
+  boxesEl: document.querySelector("#boxes"),
+  inputValueEl: document.querySelector("input"),
+  createBtn: document.querySelector("button[data-create]"),
+  destroyBtn: document.querySelector("button[data-destroy]"),
+};
 
-createBtn.addEventListener("click", handleClickCreateBtn);
-inputValueEl.addEventListener("input", handleValueChange);
-destroyBtn.addEventListener("click", handleDestroyBtnClick);
+refs.createBtn.addEventListener("click", handleClickCreateBtn);
+refs.destroyBtn.addEventListener("click", handleDestroyBtnClick);
 
 function createBoxes(amount) {
   let widthOfElement = 30;
   let heightOfElements = 30;
   const arrayOfBoxes = [];
+  const lastBoxElement = refs.boxesEl.lastElementChild;
+
+  if (lastBoxElement) {
+    widthOfElement = Number.parseInt(lastBoxElement.style.width) + 10;
+    heightOfElements = Number.parseInt(lastBoxElement.style.height) + 10;
+  }
 
   for (let i = 1; i <= amount; i += 1) {
-    const elementToCreate = document.createElement("div");
-    elementToCreate.style.width = widthOfElement + "px";
-    elementToCreate.style.height = heightOfElements + "px";
-    elementToCreate.style.backgroundColor = getRandomHexColor();
-    elementToCreate.style.margin = "10px";
+    const elementToCreate = createDivElement(widthOfElement, heightOfElements);
     arrayOfBoxes.push(elementToCreate);
     widthOfElement += 10;
     heightOfElements += 10;
   }
-  boxesEl.append(...arrayOfBoxes);
+  refs.boxesEl.append(...arrayOfBoxes);
 }
 
-function handleValueChange(event) {
-  value = event.currentTarget.value;
+function createDivElement(width, height) {
+  const div = document.createElement("div");
+  div.style.width = width + "px";
+  div.style.height = height + "px";
+  div.style.backgroundColor = getRandomHexColor();
+  div.style.margin = "10px";
+  return div;
 }
-
 function handleClickCreateBtn(event) {
-  boxesEl.innerHTML = " ";
-  createBoxes(value);
-  inputValueEl.value = 0;
+  createBoxes(refs.inputValueEl.value);
+  refs.inputValueEl.value = 0;
 }
 
 function handleDestroyBtnClick(event) {
-  boxesEl.innerHTML = " ";
+  refs.boxesEl.innerHTML = " ";
 }
 
 function getRandomHexColor() {

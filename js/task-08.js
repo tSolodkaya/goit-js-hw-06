@@ -14,6 +14,6 @@ function handleSubmitForm(event) {
   if (email === "" || password === "") {
     return alert(`Поля email и password должны быть заполнены!`);
   }
-  console.log(`Email: ${email}, Password: ${password} `);
+  console.log(data);
   event.currentTarget.reset();
 }
